@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 configDotenv()
 
 //db connection
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(`${process.env.MONGO_URI}/${process.env.DB_NAME}`)
 .then(()=>{
     app.listen(process.env.PORT, () => {
         console.log('connected to db');

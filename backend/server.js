@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 
 //dotenv configure
 configDotenv()
+//app intializing
+const app = express();
 
 //db connection
 mongoose.connect(`${process.env.MONGO_URI}`)
@@ -20,8 +22,6 @@ mongoose.connect(`${process.env.MONGO_URI}`)
     
 })
 
-//app intializing
-const app = express();
 
 
 

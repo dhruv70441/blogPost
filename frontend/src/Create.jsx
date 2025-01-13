@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const Create = () => {
   const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
+  const [blogBody, setBlogBody] = useState('');
   const [author, setAuthor] = useState('Mario');
   const [isPending, setIsPending] = useState(false);
   const navigate = useNavigate();
@@ -11,11 +11,11 @@ const Create = () => {
   const handleSubmit = (e) => {  
     e.preventDefault();  
 
-    const blog = { title, body, author };
+    const blog = { title, blogBody, author };
 
     setIsPending(true);
 
-    fetch('http://localhost:8000/blogs', {
+    fetch(`${import.meta.env.VITE_API_URL}api/v1/blogs/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(blog)
@@ -49,22 +49,20 @@ const Create = () => {
         <textarea
           name="blogbody"
           required
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
+          value={blogBody}
+          onChange={(e) => setBlogBody(e.target.value)}
           className="border-[1px] border-[#ddd] rounded-md w-full py-2 px-4 my-2 mx-0 box-border block"
         ></textarea>
         <label htmlFor="blogauthor" className="text-left block">
           Blog author:
         </label>
-        <select
+        <input
           name="blogauthor"
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
           className="border-[1px] border-[#ddd] rounded-md w-full py-2 px-4 my-2 mx-0 box-border block"
-        >
-          <option value="Mario">Mario</option>
-          <option value="Yoshi">Yoshi</option>
-        </select>
+        />
+
         {!isPending && (
           <button className="bg-[#f1356d] text-[#fff] border-0 p-2 rounded-lg cursor-pointer">
             Add Blog

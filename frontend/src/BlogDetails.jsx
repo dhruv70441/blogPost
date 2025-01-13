@@ -4,12 +4,11 @@ import useFetch from './useFetch';
 
 const BlogDetails = () => {
     const { id } = useParams();
-    const { data: blog, error, isPending } = useFetch('http://localhost:8000/blogs/' + id)
+    const { data: blog, error, isPending } = useFetch(`${import.meta.env.VITE_API_URL}api/v1/blogs/${id}`)
     const navigate = useNavigate()
     const handleClicks = () => {
-      fetch('http://localhost:8000/blogs/' + blog.id,{
+      fetch(`${import.meta.env.VITE_API_URL}api/v1/blogs/${blog._id}`,{
         method:'delete'
-
       }).then(()=>{
         navigate('/')
       })
@@ -23,7 +22,7 @@ const BlogDetails = () => {
             <article>
                 <h2 className='text-2xl font-bold text-[#f1356d] mb-3'>{blog.title}</h2>
                 <p>Written by {blog.author}</p>
-                <div className=' my-5'>{blog.body}</div>
+                <div className=' my-5'>{blog.blogBody}</div>
                 <button 
                   onClick={handleClicks}
                   className=' bg-[#f1356d] text-[#fff] border-0 p-2 rounded-lg cursor-pointer'

@@ -3,7 +3,7 @@ import useFetch from './useFetch';
 
 const Home = () => {
   
-  const { data: blogs, isPending, error } = useFetch('http://localhost:8000/blogs')
+  const { data: blogs, isPending, error } = useFetch('https://blogpost-rvau.onrender.com/api/v1/blogs/')
   
   return (
     <div>

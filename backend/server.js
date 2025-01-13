@@ -1,12 +1,20 @@
 import express from 'express';
 import { configDotenv } from 'dotenv';
-import blogRoutes from './blogs.js'
+import blogRoutes from './blogs.js';
 import mongoose from 'mongoose';
+import cors from 'cors';
 
 //dotenv configure
 configDotenv()
+
 //app intializing
 const app = express();
+
+app.use(cors());
+const corsOptions = {
+    origin: 'https://blogpostsrc.netlify.app/', 
+};
+app.use(cors(corsOptions));
 
 //db connection
 mongoose.connect(`${process.env.MONGO_URI}/${process.env.DB_NAME}`)

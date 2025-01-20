@@ -1,6 +1,7 @@
 import express from 'express';
 import { configDotenv } from 'dotenv';
-import blogRoutes from './blogs.js';
+import blogRoutes from './routes/blogs.Route.js';
+import AuthRoutes from './routes/user.Route.js'
 import mongoose from 'mongoose';
 import cors from 'cors';
 
@@ -26,11 +27,13 @@ app.use((req, res, next) => {
     console.log(`${req.method} ${req.path}`);
     next();
 });
+console.log(`${process.env.MONGO_URI}/${process.env.DB_NAME}`);
+
 
 // DB connection
 mongoose.connect(`${process.env.MONGO_URI}/${process.env.DB_NAME}`, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
-        app.listen(process.env.PORT, () => {
+        app.listen(process.env.PORT || 5000, () => {
             console.log('Connected to DB');
             console.log(`Server is running on port ${process.env.PORT}`);
         });
@@ -41,3 +44,4 @@ mongoose.connect(`${process.env.MONGO_URI}/${process.env.DB_NAME}`, { useNewUrlP
 
 // Routes
 app.use('/api/v1/blogs', blogRoutes);
+app.use('/api/v1/auth', AuthRoutes);

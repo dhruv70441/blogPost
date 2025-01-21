@@ -25,7 +25,7 @@ const userSchema = new Schema({
 });
 
 
-userSchema.statics.signup = async function(email, password){
+userSchema.statics.signup = async function(firstName, lastName, email, password){
     
     const exist = await this.findOne({email})
     if(exist){
@@ -34,7 +34,7 @@ userSchema.statics.signup = async function(email, password){
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
-    const user = await this.create({firstName, lastName,email, password:hash});
+    const user = await this.create({firstName, lastName, email, password:hash});
 
     return user;
 }

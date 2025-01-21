@@ -1,9 +1,9 @@
-import BlogDetails from "./BlogDetails"
+import BlogDetails from "./pages/BlogDetails"
 import Navbar from "./components/Navbar"
-import Create from "./Create"
-import Home from "./Home"
+import Create from "./pages/Create"
+import Home from "./pages/Home"
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import NotFound from "./NotFound"
+import NotFound from "./pages/NotFound"
 //Routes = Switch
 
 function App() {

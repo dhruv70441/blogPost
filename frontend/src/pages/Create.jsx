@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const Create = () => {
   const [title, setTitle] = useState('');
   const [blogBody, setBlogBody] = useState('');
-  const [author, setAuthor] = useState('Mario');
+  const [author, setAuthor] = useState('');
   const [isPending, setIsPending] = useState(false);
   const navigate = useNavigate();
 

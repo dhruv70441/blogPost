@@ -6,6 +6,7 @@ import Login from "./pages/login"
 import Register from "./pages/register"
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import NotFound from "./pages/NotFound"
+import { Toaster } from 'react-hot-toast'
 //Routes = Switch
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
     <Router>
       <div>
         <Navbar />
+        <Toaster position="top-center" toastOptions={{duration:2000}} />
         <div className="my-10 mx-auto max-w-[800px]">
           <Routes>
             <Route exact path="/" element={<Home />} />

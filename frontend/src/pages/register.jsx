@@ -1,65 +1,145 @@
 import React, { useState } from 'react';
+import { toast } from 'react-hot-toast';
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState({
-    fisrtName: '',
+    firstName: '',
     lastName: '',
     email: '',
     password: '',
-  })
+  });
 
-  const registerUser = (e) => {
+  const [isPending, setIsPending] = useState(false);
+
+  const validateForm = () => {
+    if (!data.firstName.trim()) {
+      toast.error("First Name is required");
+      return false;
+    }
+    if (!data.lastName.trim()) {
+      toast.error("Last Name is required");
+      return false;
+    }
+    if (!data.email.trim()) {
+      toast.error("Email is required");
+      return false;
+    }
+    if (!/\S+@\S+\.\S+/.test(data.email)) {
+      toast.error("Enter a valid email address");
+      return false;
+    }
+    if (!data.password.trim()) {
+      toast.error("Password is required");
+      return false;
+    }
+    if (data.password.length < 6) {
+      toast.error("Password must be at least 6 characters long");
+      return false;
+    }
+    return true;
+  };
+
+  const registerUser = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) return;
+
+    setIsPending(true);
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}api/v1/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || result.message || "Something went wrong. Please try again.");
+      }
+
+      toast.success("User registered successfully");
+      setData({ firstName: '', lastName: '', email: '', password: '' });
+      navigate('/login');
+
+    } catch (err) {
+      toast.error(err.message || "Failed to register. Please try again.");
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (
-    <div className="flex justify-center min-h-screen bg-gray-100">
-      <form
-        onSubmit={registerUser}
-        className="bg-white p-8 rounded-lg shadow-md w-96 flex flex-col space-y-4"
-      >
-        <h2 className="text-2xl font-bold text-center text-[#f1356d]">Register</h2>
-
-        <label className="text-gray-600 font-medium">First Name</label>
+    <div className="max-w-md my-0 mx-auto text-center">
+      <h2 className="text-md font-bold text-[#f1356d] mb-7">
+        Register New Account
+      </h2>
+      <form onSubmit={registerUser}>
+        <label htmlFor="firstName" className="text-left block">
+          First Name:
+        </label>
         <input
           type="text"
-          placeholder="Enter your first name"
-          className="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#f1356d]"
-          onChange={(e)=> setData({...data, fisrtName: e.target.value})}
+          required
+          name="firstName"
+          value={data.firstName}
+          onChange={(e) => setData({ ...data, firstName: e.target.value })}
+          className="border-[1px] border-[#ddd] rounded-md w-full py-2 px-4 my-2 mx-0 box-border block"
         />
 
-        <label className="text-gray-600 font-medium">Last Name</label>
+        <label htmlFor="lastName" className="text-left block">
+          Last Name:
+        </label>
         <input
           type="text"
-          placeholder="Enter your last name"
-          className="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#f1356d]"
-          onChange={(e)=> setData({...data, lastName: e.target.value})}
-
+          required
+          name="lastName"
+          value={data.lastName}
+          onChange={(e) => setData({ ...data, lastName: e.target.value })}
+          className="border-[1px] border-[#ddd] rounded-md w-full py-2 px-4 my-2 mx-0 box-border block"
         />
 
-        <label className="text-gray-600 font-medium">Email</label>
+        <label htmlFor="email" className="text-left block">
+          Email:
+        </label>
         <input
           type="email"
-          placeholder="Enter your email"
-          className="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#f1356d]"
-          onChange={(e)=> setData({...data, email: e.target.value})}
-
+          required
+          name="email"
+          value={data.email}
+          onChange={(e) => setData({ ...data, email: e.target.value })}
+          className="border-[1px] border-[#ddd] rounded-md w-full py-2 px-4 my-2 mx-0 box-border block"
         />
 
-        <label className="text-gray-600 font-medium">Password</label>
+        <label htmlFor="password" className="text-left block">
+          Password:
+        </label>
         <input
           type="password"
-          placeholder="Enter your password"
-          className="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#f1356d]"
-          onChange={(e)=> setData({...data, password: e.target.value})}
+          required
+          name="password"
+          value={data.password}
+          onChange={(e) => setData({ ...data, password: e.target.value })}
+          className="border-[1px] border-[#ddd] rounded-md w-full py-2 px-4 my-2 mx-0 box-border block"
         />
 
-        <button
-          type="submit"
-          className="mt-4 bg-white border-2 border-[#f1356d] text-[#f1356d] py-2 rounded hover:bg-[#f1356d] hover:text-white transition duration-300"
-        >
-          Register
-        </button>
+        {!isPending && (
+          <button className="bg-[#f1356d] text-[#fff] border-0 p-2 rounded-lg cursor-pointer w-full mt-3">
+            Register
+          </button>
+        )}
+        {isPending && (
+          <button
+            disabled
+            type="submit"
+            className="bg-[#f1356d] text-[#fff] border-0 p-2 rounded-lg cursor-pointer w-full mt-3"
+          >
+            Registering...
+          </button>
+        )}
       </form>
     </div>
   );

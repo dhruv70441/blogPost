@@ -23,6 +23,7 @@ const Login = () => {
           type="email"
           placeholder="Enter your email"
           className="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#f1356d]"
+          value={data.email}
           onChange={(e) => setData({...data, email: e.target.value})}
         />
 
@@ -31,6 +32,7 @@ const Login = () => {
           type="password"
           placeholder="Enter your password"
           className="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#f1356d]"
+          value={data.password}
           onChange={(e) => setData({...data, password: e.target.value})}
 
         />
